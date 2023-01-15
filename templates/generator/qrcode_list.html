@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-cls">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+        <title>Lista de QR's</title>
+    </head>
+    <body>
+        {% csrf_token %}
+        <h1>Lista de QRcodes</h1>
+        <input type="submit" value="Criar QR" onclick="location.href = '{% url 'generator:create' %}'">
+        <table class="table">
+            <thead>
+                <th scope="col">Id</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Link</th>
+                <th scope="col">Image</th>
+            </thead>
+            <tbody>
+            {% load qr_code %}
+            {% for code in object_list %}
+            <tr>
+                <td>{{ code.id }}</td>
+                <td>{{ code.nome }}</td>
+                <td>{{ code.link }}</td>
+                <td>{% qr_from_text code.link size=3 image_format="png" error_correction="L" %}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+</html>
